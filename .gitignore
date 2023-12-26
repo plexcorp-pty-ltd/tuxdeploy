@@ -1,0 +1,4 @@
+tests/.vagrant
+go.mod
+go.sum
+*.toml
