@@ -12,25 +12,25 @@ func main() {
 
 	appConfig := core.GetTomlConfig()
 
-	if appConfig.Server == "" {
+	if appConfig.Server.Address == "" {
 		termio.DrawTerminalHeader("Application TOML file missing.")
 		termio.PrintAppConfigNotFound(core.GetGlobalAppConfigPath())
 		return
 	}
 
-	if appConfig.NewSSHPort == 0 || appConfig.NewSSHPort == appConfig.Port {
+	if appConfig.Server.NewSSHPort == 0 || appConfig.Server.NewSSHPort == appConfig.Server.Port {
 		termio.DrawTerminalHeader("Application TOML file is invalid.")
 		termio.PrintError("New SSH port is invalid or cannot be the same as your current SSH port.", 0)
 		return
 	}
 
-	if len(appConfig.NewUsername) < 4 || appConfig.NewUsername == appConfig.Username {
+	if len(appConfig.Server.NewUsername) < 4 || appConfig.Server.NewUsername == appConfig.Server.Username {
 		termio.DrawTerminalHeader("Application TOML file is invalid.")
 		termio.PrintError("New SSH username cannot be the same as your current username and needs to be at least 4 characters long.", 0)
 		return
 	}
 
-	if appConfig.NewUsername == "root" || appConfig.NewUsername == "Root" {
+	if appConfig.Server.NewUsername == "root" || appConfig.Server.NewUsername == "Root" {
 		termio.DrawTerminalHeader("Application TOML file is invalid.")
 		termio.PrintError("Root cannot be used as the new username.", 0)
 		return
@@ -45,6 +45,8 @@ func main() {
 
 	case "build":
 		tasks.BuildServer(appConfig)
+	case "django":
+		tasks.BuildServerDjango(appConfig)
 	default:
 		termio.DrawMainMenu()
 	}

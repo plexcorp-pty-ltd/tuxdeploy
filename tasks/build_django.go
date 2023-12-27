@@ -9,29 +9,30 @@ import (
 	"github.com/plexcorp-pty-ld/tuxdeploy/termio"
 )
 
-func getSteps(config *core.AppConfig) []core.BuildStep {
+func getStepsDjango(config *core.AppConfig) []core.BuildStep {
 	var steps []core.BuildStep
 	steps = append(steps, core.BuildStep{
-		StepName: "Install APT Packages", Code: scripts.INIT_SERVER, RunLocal: false},
+		StepName: "Setup Postgresql", Code: scripts.SetupPostgreSQL(config), RunLocal: false},
 	)
 
 	steps = append(steps, core.BuildStep{
-		StepName: "Setup SSH User", Code: scripts.GetSshUserSetup(config), RunLocal: false},
+		StepName: "Install Django APT Packages", Code: scripts.GetPythonInitialSetupScript(config), RunLocal: false},
 	)
 
 	steps = append(steps, core.BuildStep{
-		StepName: "Security Post Steps", Code: scripts.GetSecurityPostSteps(config), RunLocal: false},
+		StepName: "Setup Virtual Environment", Code: scripts.GetVenvSetup(config), RunLocal: false},
 	)
+
+	steps = append(steps, core.BuildStep{StepName: "Generate deploy key", Code: scripts.GenerateDeployKey(config), RunLocal: false})
 
 	return steps
 }
 
-func BuildServer(config *core.AppConfig) {
+func BuildServerDjango(config *core.AppConfig) {
 
-	termio.DrawTerminalHeader("Ubuntu standard server setup. This utility will provision " +
-		"a new server which includes SSH hardening and setting up a firewall.")
+	termio.DrawTerminalHeader("Setup of Django essentials such as a virtual environment, gunicorn and nginx.")
 
-	sshConfig := core.GetIntialSSHConfig(config)
+	sshConfig := core.GetNewSSHConfig(config)
 	client, err := core.GetSshClient(config, sshConfig)
 
 	if err == nil {
@@ -41,7 +42,7 @@ func BuildServer(config *core.AppConfig) {
 		return
 	}
 
-	steps := getSteps(config)
+	steps := getStepsDjango(config)
 
 	for stepNum, step := range steps {
 
@@ -52,20 +53,20 @@ func BuildServer(config *core.AppConfig) {
 			return
 		}
 
+		if err != nil {
+			termio.PrintError("Oops, step: "+step.StepName+" has errored with message: "+err.Error()+". Response: "+string(response), 60)
+			return
+		}
+
 		stepNum++
 		fmt.Println()
 		termio.PrintRegularText(">>> BUILD LOG - "+step.StepName+" <<<<", 0)
-		fmt.Println(">>>>>>>>>")
-		fmt.Println("Ran: " + step.Code)
-		fmt.Println(">>>>>>>>>")
-
 		fmt.Println(string(response))
-
 		termio.PrintRegularText(">>> END BUILD LOG - "+step.StepName+" <<<<", 0)
 		fmt.Println()
 
 	}
 
 	msg := termio.GetColorText("#0B832C")
-	fmt.Println(msg.Render("Yay! all steps for the intial server setup are complete."))
+	fmt.Println(msg.Render("Yay! all steps for Django environment complete."))
 }

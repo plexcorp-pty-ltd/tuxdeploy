@@ -20,12 +20,19 @@ var TUX_DEPLOY_LOGO = `⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⣸⠦⠤⢄⡡ TuxDeploy⢀⡴
 `
 var TOML_CONFIG_EXAMPLE = `
-server = "192.168.1.1"   
+[server]
+address = "192.168.1.1"   
 username = "root"         
-ssh_key = "/home/kevin/.ssh/id_rsa" 
-port = 22       
+ssh_key = "/home/kevin/.ssh/testkey" 
+port = 22      
 new_username = "webadmin" 
-new_ssh_port = 9022
+new_ssh_port = 2022
+
+[project]
+project_name = "mydjangoapp"
+project_git = "git@github.com:plexcorp-pty-ltd/testdjango.git"
+project_nginx = "nginx/{project_name}"
+project_systemctl = "systemctl/{project_name}.service"
 `
 
 func PrintError(msgTxt string, Width int) {

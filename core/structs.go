@@ -1,10 +1,36 @@
 package core
 
+import "regexp"
+
 type AppConfig struct {
-	Server      string `toml:"server"`
-	Username    string `toml:"username"`
-	SSHKey      string `toml:"ssh_key"`
-	Port        int    `toml:"port"`
-	NewUsername string `toml:"new_username"`
-	NewSSHPort  int    `toml:"new_ssh_port"`
+	Server struct {
+		Address     string `toml:"address"`
+		Username    string `toml:"username"`
+		SSHKey      string `toml:"ssh_key"`
+		Port        int    `toml:"port"`
+		NewUsername string `toml:"new_username"`
+		NewSSHPort  int    `toml:"new_ssh_port"`
+	} `toml:"server"`
+	Project struct {
+		ProjectName      string `toml:"project_name"`
+		ProjectGit       string `toml:"project_git"`
+		ProjectNginx     string `toml:"project_nginx"`
+		ProjectSystemctl string `toml:"project_systemctl"`
+	} `toml:"project"`
+}
+
+func (c *AppConfig) GetProjectPath() string {
+	return "/var/www/" + c.Project.ProjectName
+}
+
+var nonAlphanumericRegex = regexp.MustCompile(`[^a-zA-Z0-9]+`)
+
+func (c *AppConfig) GetProjecUsername() string {
+	return nonAlphanumericRegex.ReplaceAllString(c.Project.ProjectName, "")
+}
+
+type BuildStep struct {
+	StepName string
+	Code     string
+	RunLocal bool
 }

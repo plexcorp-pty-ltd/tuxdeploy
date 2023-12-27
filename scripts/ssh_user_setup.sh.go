@@ -40,8 +40,8 @@ mkdir -p /var/www/
 chown -R www-data:www-data /var/www/
 	`
 
-	script = strings.ReplaceAll(script, "#username#", config.NewUsername)
-	pubkey, err := os.ReadFile(config.SSHKey + ".pub")
+	script = strings.ReplaceAll(script, "#username#", config.Server.NewUsername)
+	pubkey, err := os.ReadFile(config.Server.SSHKey + ".pub")
 	if err != nil {
 		fmt.Println(err)
 	}

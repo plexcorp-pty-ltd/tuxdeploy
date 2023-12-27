@@ -26,9 +26,9 @@ echo "y" | sudo ufw enable
 
 func GetSecurityPostSteps(config *core.AppConfig) string {
 	script := SECURITY_POST_STEPS
-	script = strings.ReplaceAll(script, "#SSH_PORT#", fmt.Sprintf("%d", config.Port))
-	script = strings.ReplaceAll(script, "#NEW_SSH_PORT#", fmt.Sprintf("%d", config.NewSSHPort))
-	script = strings.ReplaceAll(script, "#username#", config.NewUsername)
+	script = strings.ReplaceAll(script, "#SSH_PORT#", fmt.Sprintf("%d", config.Server.Port))
+	script = strings.ReplaceAll(script, "#NEW_SSH_PORT#", fmt.Sprintf("%d", config.Server.NewSSHPort))
+	script = strings.ReplaceAll(script, "#username#", config.Server.NewUsername)
 
 	return script
 }
