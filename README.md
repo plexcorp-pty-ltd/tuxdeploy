@@ -35,6 +35,6 @@ TuxDeploy will only work with SSH keys because this provides a greater deal of s
 
 Once you have inputted the correct **address** and **ssh_key** path (this is your private key), simply run:
 ```bash
-go run main.go
+go run main.go build
 ```
 This command will SSH into the server and perform essential setup tasks such as SSH hardening, installing APT packages, and setting up your firewall.
