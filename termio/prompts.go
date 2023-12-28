@@ -9,7 +9,7 @@ import (
 )
 
 func PromptPassword(question string) string {
-	fmt.Fprint(os.Stderr, GetColorText("#FF3333").Render(question+" "))
+	fmt.Fprint(os.Stderr, GetColorText(TEXT_SPECIAL_LIGHT, TEXT_SPECIAL_DARK).Render(question+" "))
 	fmt.Println()
 
 	password, err := term.ReadPassword(int(os.Stdin.Fd()))

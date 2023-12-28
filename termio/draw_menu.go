@@ -2,14 +2,12 @@ package termio
 
 import (
 	"fmt"
-
-	"github.com/charmbracelet/lipgloss"
 )
 
 func DrawMainMenu() {
 	DrawTerminalHeader("Tux Deploy is a powerful CLI utility that helps you build ubuntu servers fast. What would you like to do?")
 
-	var commandText = GetColorText("#5881af")
+	var commandText = GetColorText(TEXT_SPECIAL_LIGHT, TEXT_SPECIAL_DARK)
 
 	fmt.Println(commandText.Render("build           -- Build a new Ubuntu server from scratch."))
 	fmt.Println(commandText.Render("django          -- Setup Gunicorn + Nginx + virtualenv + PostgreSQL + Redis."))
@@ -26,13 +24,10 @@ func DrawMainMenu() {
 }
 
 func DrawTerminalHeader(msg string) {
-	var style = lipgloss.NewStyle().
-		Bold(true).
-		Foreground(lipgloss.Color("#2E97C3"))
+	var style = GetColorText(TEXT_SPECIAL_LIGHT, TEXT_SPECIAL_DARK)
 
 	fmt.Println(style.Render(TUX_DEPLOY_LOGO))
 
-	var helptext = lipgloss.NewStyle().Bold(true).
-		Foreground(lipgloss.Color("#dcebfc")).Width(60).PaddingBottom(1)
+	var helptext = GetColorText(TEXT_LIGHT, TEXT_DARK).Width(60).PaddingBottom(1)
 	fmt.Println(helptext.Render(msg))
 }
