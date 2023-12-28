@@ -66,6 +66,6 @@ func BuildServer(config *core.AppConfig) {
 
 	}
 
-	msg := termio.GetColorText("#0B832C")
+	msg := termio.GetColorText(termio.SUCCESS_TEXT, termio.SUCCESS_TEXT)
 	fmt.Println(msg.Render("Yay! all steps for the intial server setup are complete."))
 }

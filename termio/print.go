@@ -45,7 +45,7 @@ func PrintError(msgTxt string, Width int) {
 }
 
 func PrintRegularText(msgTxt string, Width int) {
-	msg := GetColorText("#dcebfc")
+	msg := GetColorText(TEXT_LIGHT, TEXT_DARK)
 	if Width != 0 {
 		fmt.Println(msg.Width(Width).Render(msgTxt))
 	} else {
@@ -54,10 +54,10 @@ func PrintRegularText(msgTxt string, Width int) {
 }
 
 func GetErrorText() lipgloss.Style {
-	return lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("#FF3333"))
+	return GetColorText(ERROR_TEXT, ERROR_TEXT)
 }
-func GetColorText(color string) lipgloss.Style {
-	return lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color(color))
+func GetColorText(colorLight string, colorDark string) lipgloss.Style {
+	return lipgloss.NewStyle().Bold(true).Foreground(lipgloss.AdaptiveColor{Light: colorLight, Dark: colorDark})
 }
 
 func PrintAppConfigNotFound(globalConfigPath string) {
