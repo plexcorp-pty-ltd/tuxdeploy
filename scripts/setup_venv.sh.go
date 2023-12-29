@@ -15,6 +15,7 @@ var SETUP_VENV = `
   sudo chown -R #USERNAME#:www-data #PROJECT_PATH#
   cd #PROJECT_PATH# && sudo -u #USERNAME# python3 -m venv .venv
   sudo -u #USERNAME# #PROJECT_PATH#/.venv/bin/pip3 install gunicorn
+  sudo -u #USERNAME# #PROJECT_PATH#/.venv/bin/pip3 install psycopg2
 `
 
 func GetVenvSetup(config *core.AppConfig) string {

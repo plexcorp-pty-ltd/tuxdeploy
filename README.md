@@ -12,21 +12,23 @@ go run main.go
 
 ## Config file
 
-You will need to set up a **.tuxdeploy.toml**, which will contain all the server and project settings. See below an example:
+You will need to set up a .tuxdeploy/config.toml file in your project root directory with the following configuration:
+
 ```yaml
 [server]
-address = "192.168.1.1"
-username = "root"
-ssh_key = "/home/kevin/.ssh/testkey"
-port = 22
-new_username = "webadmin"
+address = "192.168.1.1"   
+username = "root"         
+ssh_key = "/home/kevin/.ssh/testkey" 
+port = 22      
+new_username = "webadmin" 
 new_ssh_port = 2022
 
 [project]
-project_name = "mydjangoapp"
+domain = "testapp.dev"
+project_name = "testdjango"
 project_git = "git@github.com:plexcorp-pty-ltd/testdjango.git"
-project_nginx = "nginx/{project_name}"
-project_systemctl = "systemctl/{project_name}.service"
+gunicorn_workers = 4
+gunicorn_port = 5000
 ```
 
 ## Setup a blank server
@@ -34,7 +36,9 @@ project_systemctl = "systemctl/{project_name}.service"
 TuxDeploy will only work with SSH keys because this provides a greater deal of security. Most hosting providers such as Digital Ocean, Linode, and AWS allow for setting up servers with SSH keys instead of passwords.
 
 Once you have inputted the correct **address** and **ssh_key** path (this is your private key), simply run:
+
 ```bash
 go run main.go build
 ```
+
 This command will SSH into the server and perform essential setup tasks such as SSH hardening, installing APT packages, and setting up your firewall.

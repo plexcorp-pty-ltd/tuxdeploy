@@ -12,15 +12,16 @@ type AppConfig struct {
 		NewSSHPort  int    `toml:"new_ssh_port"`
 	} `toml:"server"`
 	Project struct {
-		ProjectName      string `toml:"project_name"`
-		ProjectGit       string `toml:"project_git"`
-		ProjectNginx     string `toml:"project_nginx"`
-		ProjectSystemctl string `toml:"project_systemctl"`
+		Domain          string `toml:"domain"`
+		ProjectName     string `toml:"project_name"`
+		ProjectGit      string `toml:"project_git"`
+		GunicornWorkers int    `toml:"gunicorn_workers"`
+		GunicornPort    int    `toml:"gunicorn_port"`
 	} `toml:"project"`
 }
 
 func (c *AppConfig) GetProjectPath() string {
-	return "/var/www/" + c.Project.ProjectName
+	return "/var/www/" + c.Project.Domain
 }
 
 var nonAlphanumericRegex = regexp.MustCompile(`[^a-zA-Z0-9]+`)
