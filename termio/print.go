@@ -29,10 +29,11 @@ new_username = "webadmin"
 new_ssh_port = 2022
 
 [project]
+domain = testapp.dev
 project_name = "mydjangoapp"
 project_git = "git@github.com:plexcorp-pty-ltd/testdjango.git"
-project_nginx = "nginx/{project_name}"
-project_systemctl = "systemctl/{project_name}.service"
+gunicorn_workers = 4
+gunicorn_port = 5000
 `
 
 func PrintError(msgTxt string, Width int) {
@@ -60,8 +61,8 @@ func GetColorText(colorLight string, colorDark string) lipgloss.Style {
 	return lipgloss.NewStyle().Bold(true).Foreground(lipgloss.AdaptiveColor{Light: colorLight, Dark: colorDark})
 }
 
-func PrintAppConfigNotFound(globalConfigPath string) {
-	PrintError("Please create a ./tuxdeploy.toml file either in the current directory or "+globalConfigPath+". Your file should look like the following:\n", 60)
+func PrintAppConfigNotFound() {
+	PrintError("Please create a ./tuxdeploy/config.toml file.", 60)
 
 	PrintRegularText(TOML_CONFIG_EXAMPLE, 0)
 	PrintRegularText("The \"new_\" configs are used to secure your server. SSH access will be disabled for the root user, therefore once the setup is complete - you can only access your server via the \"new_username\" user and the \"new_port\" SSH port.", 60)

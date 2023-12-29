@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/plexcorp-pty-ld/tuxdeploy/core"
@@ -10,11 +11,23 @@ import (
 
 func main() {
 
+	cwd, err := os.Getwd()
+	if err != nil {
+		fmt.Println("Failed to get current working directory: ", err)
+		return
+	}
+
+	_, err = os.Stat(cwd + "/.tuxdeploy")
+	if err != nil {
+
+		os.Mkdir(cwd+"/.tuxdeploy", 0755)
+	}
+
 	appConfig := core.GetTomlConfig()
 
 	if appConfig.Server.Address == "" {
 		termio.DrawTerminalHeader("Application TOML file missing.")
-		termio.PrintAppConfigNotFound(core.GetGlobalAppConfigPath())
+		termio.PrintAppConfigNotFound()
 		return
 	}
 

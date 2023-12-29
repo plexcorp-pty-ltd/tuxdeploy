@@ -15,12 +15,6 @@ import (
 	"golang.org/x/crypto/ssh"
 )
 
-func GetGlobalAppConfigPath() string {
-	globalConfigPath, _ := os.UserHomeDir()
-	globalConfigPath = globalConfigPath + "/.tuxdeploy.toml"
-	return globalConfigPath
-}
-
 func HasPassphrase(filePath string) bool {
 	keyBytes, err := os.ReadFile(filePath)
 	if err != nil {
@@ -58,18 +52,12 @@ func GetSshClient(appConf *AppConfig, sshConfig *goph.Config) (*goph.Client, err
 
 func GetTomlConfig() *AppConfig {
 
-	_, foundLocalConfig := os.Stat("./.tuxdeploy.toml")
-	globalConfigPath := GetGlobalAppConfigPath()
-	_, foundGlobalConfig := os.Stat(globalConfigPath)
+	filename := "./.tuxdeploy/config.toml"
+	_, foundConfig := os.Stat(filename)
 	var config = &AppConfig{}
 
-	if foundLocalConfig != nil && foundGlobalConfig != nil {
+	if foundConfig != nil {
 		return config
-	}
-
-	filename := globalConfigPath
-	if foundLocalConfig == nil {
-		filename = "./.tuxdeploy.toml"
 	}
 
 	_, err := toml.DecodeFile(filename, config)

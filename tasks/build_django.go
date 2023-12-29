@@ -24,6 +24,8 @@ func getStepsDjango(config *core.AppConfig) []core.BuildStep {
 	)
 
 	steps = append(steps, core.BuildStep{StepName: "Generate deploy key", Code: scripts.GenerateDeployKey(config), RunLocal: false})
+	steps = append(steps, core.BuildStep{StepName: "Generate Gunicorn service file", Code: scripts.GenerateGunicornConfig(config), RunLocal: false})
+	steps = append(steps, core.BuildStep{StepName: "Generate nginx config file", Code: scripts.GenerateNginxConfig(config), RunLocal: false})
 
 	return steps
 }
